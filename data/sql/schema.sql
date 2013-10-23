@@ -1,0 +1,12 @@
+CREATE TABLE comment (id INT AUTO_INCREMENT, request_id INT NOT NULL, theme_id INT NOT NULL, description VARCHAR(45) NOT NULL, INDEX request_id_idx (request_id), INDEX theme_id_idx (theme_id), PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE request (id INT AUTO_INCREMENT, description VARCHAR(45), PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE request_theme (id BIGINT AUTO_INCREMENT, request_id INT NOT NULL, theme_id INT NOT NULL, INDEX request_id_idx (request_id), INDEX theme_id_idx (theme_id), PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE tag (id INT AUTO_INCREMENT, name VARCHAR(45), PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE theme (id INT AUTO_INCREMENT, name VARCHAR(45), description VARCHAR(45), image VARCHAR(45), PRIMARY KEY(id)) ENGINE = INNODB;
+CREATE TABLE theme_tag (id BIGINT AUTO_INCREMENT, theme_id INT NOT NULL, tag_id INT NOT NULL, INDEX theme_id_idx (theme_id), INDEX tag_id_idx (tag_id), PRIMARY KEY(id)) ENGINE = INNODB;
+ALTER TABLE comment ADD CONSTRAINT comment_theme_id_request_theme_theme_id FOREIGN KEY (theme_id) REFERENCES request_theme(theme_id);
+ALTER TABLE comment ADD CONSTRAINT comment_request_id_request_theme_request_id FOREIGN KEY (request_id) REFERENCES request_theme(request_id);
+ALTER TABLE request_theme ADD CONSTRAINT request_theme_theme_id_theme_id FOREIGN KEY (theme_id) REFERENCES theme(id);
+ALTER TABLE request_theme ADD CONSTRAINT request_theme_request_id_request_id FOREIGN KEY (request_id) REFERENCES request(id);
+ALTER TABLE theme_tag ADD CONSTRAINT theme_tag_theme_id_theme_id FOREIGN KEY (theme_id) REFERENCES theme(id);
+ALTER TABLE theme_tag ADD CONSTRAINT theme_tag_tag_id_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
