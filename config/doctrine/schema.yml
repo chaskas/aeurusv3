@@ -1,0 +1,196 @@
+Comment:
+  connection: doctrine
+  tableName: comment
+  columns:
+    id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+      autoincrement: true
+    request_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    theme_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    description:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+  relations:
+    RequestTheme:
+      local: request_id
+      foreign: request_id
+      type: one
+    RequestTheme_2:
+      class: RequestTheme
+      local: theme_id
+      foreign: theme_id
+      type: one
+Request:
+  connection: doctrine
+  tableName: request
+  columns:
+    id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+      autoincrement: true
+    description:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: false
+      autoincrement: false
+  relations:
+    RequestTheme:
+      local: id
+      foreign: request_id
+      type: many
+RequestTheme:
+  connection: doctrine
+  tableName: request_theme
+  columns:
+    id:
+      type: integer(8)
+      autoincrement: true
+      primary: true
+    request_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    theme_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+  relations:
+    Request:
+      local: request_id
+      foreign: id
+      type: one
+    Theme:
+      local: theme_id
+      foreign: id
+      type: one
+    Comment:
+      local: request_id
+      foreign: request_id
+      type: many
+    Comment_2:
+      class: Comment
+      local: theme_id
+      foreign: theme_id
+      type: many
+Tag:
+  connection: doctrine
+  tableName: tag
+  columns:
+    id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+      autoincrement: true
+    name:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: false
+      autoincrement: false
+  relations:
+    ThemeTag:
+      local: id
+      foreign: tag_id
+      type: many
+Theme:
+  connection: doctrine
+  tableName: theme
+  columns:
+    id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: true
+      autoincrement: true
+    name:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: false
+      autoincrement: false
+    description:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: false
+      autoincrement: false
+    image:
+      type: string(45)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: false
+      autoincrement: false
+  relations:
+    RequestTheme:
+      local: id
+      foreign: theme_id
+      type: many
+    ThemeTag:
+      local: id
+      foreign: theme_id
+      type: many
+ThemeTag:
+  connection: doctrine
+  tableName: theme_tag
+  columns:
+    id:
+      type: integer(8)
+      autoincrement: true
+      primary: true
+    theme_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+    tag_id:
+      type: integer(4)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: true
+      autoincrement: false
+  relations:
+    Theme:
+      local: theme_id
+      foreign: id
+      type: one
+    Tag:
+      local: tag_id
+      foreign: id
+      type: one
