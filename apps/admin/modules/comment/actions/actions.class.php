@@ -1,32 +1,32 @@
 <?php
 
 /**
- * request actions.
+ * comment actions.
  *
  * @package    aeurus
- * @subpackage request
+ * @subpackage comment
  * @author     Rodrigo Campos H. rodrigo <at> webdevel <dot> cl
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class requestActions extends sfActions
+class commentActions extends sfActions
 {
   public function executeIndex(sfWebRequest $request)
   {
-    $this->requests = Doctrine_Core::getTable('Request')
+    $this->comments = Doctrine_Core::getTable('Comment')
       ->createQuery('a')
       ->execute();
   }
 
   public function executeNew(sfWebRequest $request)
   {
-    $this->form = new RequestForm();
+    $this->form = new CommentForm();
   }
 
   public function executeCreate(sfWebRequest $request)
   {
     $this->forward404Unless($request->isMethod(sfRequest::POST));
 
-    $this->form = new RequestForm();
+    $this->form = new CommentForm();
 
     $this->processForm($request, $this->form);
 
@@ -35,15 +35,15 @@ class requestActions extends sfActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->forward404Unless($r = Doctrine_Core::getTable('Request')->find(array($request->getParameter('id'))), sprintf('Object request does not exist (%s).', $request->getParameter('id')));
-    $this->form = new RequestForm($r);
+    $this->forward404Unless($comment = Doctrine_Core::getTable('Comment')->find(array($request->getParameter('id'))), sprintf('Object comment does not exist (%s).', $request->getParameter('id')));
+    $this->form = new CommentForm($comment);
   }
 
   public function executeUpdate(sfWebRequest $request)
   {
     $this->forward404Unless($request->isMethod(sfRequest::POST) || $request->isMethod(sfRequest::PUT));
-    $this->forward404Unless($r = Doctrine_Core::getTable('Request')->find(array($request->getParameter('id'))), sprintf('Object request does not exist (%s).', $request->getParameter('id')));
-    $this->form = new RequestForm($r);
+    $this->forward404Unless($comment = Doctrine_Core::getTable('Comment')->find(array($request->getParameter('id'))), sprintf('Object comment does not exist (%s).', $request->getParameter('id')));
+    $this->form = new CommentForm($comment);
 
     $this->processForm($request, $this->form);
 
@@ -54,10 +54,10 @@ class requestActions extends sfActions
   {
     $request->checkCSRFProtection();
 
-    $this->forward404Unless($r = Doctrine_Core::getTable('Request')->find(array($request->getParameter('id'))), sprintf('Object request does not exist (%s).', $request->getParameter('id')));
-    $r->delete();
+    $this->forward404Unless($comment = Doctrine_Core::getTable('Comment')->find(array($request->getParameter('id'))), sprintf('Object comment does not exist (%s).', $request->getParameter('id')));
+    $comment->delete();
 
-    $this->redirect('request/index');
+    $this->redirect('comment/index');
   }
 
   protected function processForm(sfWebRequest $request, sfForm $form)
@@ -65,9 +65,9 @@ class requestActions extends sfActions
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
     if ($form->isValid())
     {
-      $request = $form->save();
+      $comment = $form->save();
 
-      $this->redirect('request/edit?id='.$request->getId());
+      $this->redirect('comment/edit?id='.$comment->getId());
     }
   }
 }
