@@ -1,0 +1,8 @@
+./cache/
+./log/
+cache/
+*.log
+web/uploads/*
+config/databases.yml
+config/propel.ini
+web/*_dev.php
